@@ -31,14 +31,23 @@ openai = OpenAI(
     organization=creds['OPENAI']['organization']
 )
 
-
 def generate_bio(prompt, model="curie"):
-    completion = openai.completions.create(
-        model=model,
-        prompt=prompt,
-        temperature=0.7,
-        max_tokens=70
-    )
+    try:
+        completion = openai.completions.create(
+            model=model,
+            prompt=prompt,
+            temperature=0.7,
+            max_tokens=70
+        )
+    except Exception as e:
+        print('Error:', e)  # print the exception and try again
+        completion = openai.completions.create(
+            model=model,
+            prompt=prompt,
+            temperature=0.7,
+            max_tokens=70
+        )
+
     # print("Newly generated bio:", completion.choices[0].text)
     # print(dict(completion).get('usage'))
     # print(completion.model_dump_json(indent=2))
